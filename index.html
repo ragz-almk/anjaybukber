@@ -9,7 +9,7 @@
     <style>
         /* Base Styles & Portrait Lock */
         :root {
-            --primary: #2b5c43; /* Dark green theme for Ramadhan */
+            --primary: #2b5c43;
             --primary-light: #3d805d;
             --bg-color: #fdfbf7;
             --gold: #c5a059;
@@ -23,13 +23,13 @@
             align-items: center;
             overflow: hidden;
             font-family: 'Lato', sans-serif;
-            touch-action: none; /* Prevent browser default scroll/refresh */
+            touch-action: none; 
         }
         h1, h2, h3, .serif {
             font-family: 'Playfair Display', serif;
         }
 
-        /* App Container - Dibuat Full Screen untuk semua device */
+        /* App Container - Full Screen */
         #app {
             width: 100vw;
             height: 100vh;
@@ -60,14 +60,8 @@
         }
 
         /* --- TRANSITIONS --- */
-        
-        /* 1. Zoom Transition */
-        .slide.zoom-in {
-            animation: zoomIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        .slide.zoom-out {
-            animation: zoomOut 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
+        .slide.zoom-in { animation: zoomIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .slide.zoom-out { animation: zoomOut 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes zoomIn {
             0% { opacity: 0; transform: scale(1.1); visibility: visible; z-index: 20;}
             100% { opacity: 1; transform: scale(1); visibility: visible; z-index: 20;}
@@ -77,7 +71,6 @@
             100% { opacity: 0; transform: scale(0.9); visibility: hidden; z-index: 10;}
         }
 
-        /* 2. Cloud Transition Overlay */
         #cloud-overlay {
             position: absolute; inset: 0; z-index: 50;
             pointer-events: none; display: none;
@@ -96,12 +89,11 @@
         @keyframes moveCloud {
             0% { transform: translateX(-100%) scale(1); opacity: 0; }
             30% { opacity: 1; }
-            50% { transform: translateX(0%) scale(1.2); opacity: 1; } /* Covers screen */
+            50% { transform: translateX(0%) scale(1.2); opacity: 1; }
             70% { opacity: 1; }
             100% { transform: translateX(100%) scale(1); opacity: 0; }
         }
 
-        /* 3. Bird & Wipe Transition */
         #bird-overlay {
             position: absolute; inset: 0; z-index: 50;
             pointer-events: none; display: none;
@@ -127,7 +119,6 @@
             100% { transform: translate(120vw, -120vh) scale(1.5); opacity: 0; }
         }
 
-        /* Navigation Hint */
         .swipe-hint {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             animation: bounce 2s infinite; z-index: 30; opacity: 0.7; pointer-events: none;
@@ -138,7 +129,6 @@
             60% { transform: translateX(-50%) translateY(-7px); }
         }
 
-        /* Forms & Inputs */
         input, textarea, select {
             width: 100%; padding: 0.75rem; margin-bottom: 1rem;
             border: 1px solid #ddd; border-radius: 8px;
@@ -150,11 +140,10 @@
             background-color: var(--primary); color: white;
             padding: 0.75rem 2rem; border-radius: 30px; border: none;
             font-weight: bold; cursor: pointer; transition: 0.3s;
-            display: inline-block; text-decoration: none;
+            display: inline-block; text-decoration: none; text-align: center;
         }
         .btn:hover { background-color: var(--primary-light); }
 
-        /* Decorations */
         .floral-top { position: absolute; top: -20px; left: -20px; width: 200px; opacity: 0.6; pointer-events: none; }
         .floral-bottom { position: absolute; bottom: -20px; right: -20px; width: 200px; opacity: 0.6; transform: rotate(180deg); pointer-events: none; }
         .text-gold { color: var(--gold); }
@@ -214,9 +203,10 @@
 
                 <div class="bg-white p-6 rounded-2xl shadow-lg w-full mb-6">
                     <h3 class="text-xl mb-2 text-[#2b5c43]">Lokasi Acara</h3>
-                    <p class="text-gray-600 font-bold">Kantor Ruang Desain</p>
-                    <p class="text-gray-500 text-sm mb-4">Jl. Delta Raya Utara No. 53, Waru, Sidoarjo</p>
-                    <a href="#" onclick="alert('Ini akan membuka rute ke lokasi di Google Maps'); return false;" class="btn text-sm py-2 px-6">Buka Peta</a>
+                    <p class="text-gray-600 font-bold">Talaga Sampireun</p>
+                    <p class="text-gray-500 text-sm mb-4">Jl. Lingkar Luar Barat, Cengkareng, Jakarta Barat</p>
+                    
+                    <a href="https://www.google.com/maps/search/?api=1&query=Talaga+Sampireun+Puri+Jakarta+Barat" target="_blank" rel="noopener noreferrer" class="btn text-sm py-2 px-6">Buka Peta</a>
                 </div>
             </div>
         </section>
@@ -228,21 +218,23 @@
                 <p class="text-gray-600 text-sm mb-8 px-4">Kehadiran teman-teman sangat kami harapkan untuk melengkapi kebahagiaan di bulan yang suci ini. Mohon konfirmasi kehadiran Anda di bawah ini:</p>
 
                 <div class="bg-white p-6 rounded-2xl shadow-lg w-full text-left relative z-20 border-t-4 border-[#2b5c43]">
-                    <form onsubmit="alert('Terima kasih atas konfirmasinya! Sampai jumpa di acara Bukber.'); return false;">
+                    
+                    <form onsubmit="sendRSVP(event)">
                         <label class="text-xs font-bold text-gray-500 uppercase">Nama Lengkap</label>
-                        <input type="text" placeholder="Masukkan nama Anda" required>
+                        <input type="text" id="rsvp-nama" placeholder="Masukkan nama Anda" required>
                         
                         <label class="text-xs font-bold text-gray-500 uppercase">Status Kehadiran</label>
-                        <select required>
+                        <select id="rsvp-status" required>
                             <option value="Hadir">Insya Allah, Saya Hadir</option>
                             <option value="Tidak Hadir">Maaf, Saya Berhalangan</option>
                         </select>
                         
                         <label class="text-xs font-bold text-gray-500 uppercase">Pesan & Kesan</label>
-                        <textarea rows="3" placeholder="Tuliskan pesan untuk teman-teman atau panitia..."></textarea>
+                        <textarea id="rsvp-pesan" rows="3" placeholder="Tuliskan pesan untuk teman-teman atau panitia..."></textarea>
                         
                         <button type="submit" class="btn w-full mt-2">Kirim RSVP</button>
                     </form>
+
                 </div>
             </div>
         </section>
@@ -401,6 +393,33 @@
                 }
             }, 50);
         });
+
+        // --- Fungsi Kirim RSVP ke Email ---
+        function sendRSVP(event) {
+            // Mencegah form memuat ulang halaman (refresh)
+            event.preventDefault();
+
+            // 1. Ambil data dari input pengguna berdasarkan ID
+            const nama = document.getElementById('rsvp-nama').value;
+            const status = document.getElementById('rsvp-status').value;
+            const pesan = document.getElementById('rsvp-pesan').value;
+
+            // 2. Siapkan alamat email tujuan (TIDAK ditampilkan ke layar pengguna)
+            const alamatEmail = "contoh@gmail.com"; 
+            
+            // 3. Siapkan Judul (Subject) dan Isi Pesan (Body) dari email
+            const subject = encodeURIComponent(`RSVP Bukber Instansi - ${nama}`);
+            const body = encodeURIComponent(
+                `Halo Panitia,\n\nBerikut adalah konfirmasi kehadiran saya:\n\n` +
+                `Nama Lengkap: ${nama}\n` +
+                `Status Kehadiran: ${status}\n` +
+                `Pesan: ${pesan}\n\n` +
+                `Terima kasih.`
+            );
+
+            // 4. Buka aplikasi email default pengirim (contoh: Gmail, Mail app)
+            window.location.href = `mailto:${alamatEmail}?subject=${subject}&body=${body}`;
+        }
 
     </script>
 </body>
