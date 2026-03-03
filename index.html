@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="./logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* Base Styles & Portrait Lock */
         :root {
@@ -38,6 +39,49 @@
             position: relative;
             overflow: hidden;
         }
+
+        /* --- COVER PAGE STYLES --- */
+        #cover-page {
+            position: absolute;
+            inset: 0;
+            z-index: 100; /* Paling atas */
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+        .cover-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-20px);
+        }
+
+        /* Audio Control Button (Opsional) */
+        #audio-control {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 90;
+            background: var(--gold);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none; /* Sembunyikan sampai sampul dibuka */
+            animation: spin 4s linear infinite;
+        }
+        #audio-control.paused {
+            animation: none;
+            opacity: 0.5;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Slides */
         .slide {
@@ -152,8 +196,37 @@
 </head>
 <body>
 
+    <audio id="bgm-audio" loop>
+        <source src="./lagu.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
     <div id="app">
         
+        <div id="cover-page">
+            <svg class="floral-top text-[#c5a059]" viewBox="0 0 200 200" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100,0 C100,55.23 55.23,100 0,100 C55.23,100 100,144.77 100,200 C100,144.77 144.77,100 200,100 C144.77,100 100,55.23 100,0 Z" opacity="0.3"/>
+                <path d="M60,0 C60,33 33,60 0,60 C33,60 60,87 60,120 C60,87 87,60 120,60 C87,60 60,33 60,0 Z" opacity="0.5"/>
+            </svg>
+            <svg class="floral-bottom text-[#c5a059]" viewBox="0 0 200 200" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100,0 C100,55.23 55.23,100 0,100 C55.23,100 100,144.77 100,200 C100,144.77 144.77,100 200,100 C144.77,100 100,55.23 100,0 Z" opacity="0.3"/>
+                <path d="M60,0 C60,33 33,60 0,60 C33,60 60,87 60,120 C60,87 87,60 120,60 C87,60 60,33 60,0 Z" opacity="0.5"/>
+            </svg>
+
+            <img src="./logo.png" alt="Logo Instansi" class="h-20 w-auto mx-auto object-contain mb-6">
+            <p class="text-sm tracking-[0.2em] text-gray-500 mb-2 uppercase">Kpd Yth. Bapak/Ibu/Saudara/i</p>
+            <h2 class="text-3xl text-[#2b5c43] mb-8 font-bold serif">Tamu Undangan</h2>
+            
+            <button id="btn-buka" class="btn flex items-center gap-2 z-10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path></svg>
+                Buka Undangan
+            </button>
+        </div>
+
+        <div id="audio-control">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+        </div>
+
         <section id="slide-0" class="slide active">
             <svg class="floral-top text-[#c5a059]" viewBox="0 0 200 200" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100,0 C100,55.23 55.23,100 0,100 C55.23,100 100,144.77 100,200 C100,144.77 144.77,100 200,100 C144.77,100 100,55.23 100,0 Z" opacity="0.3"/>
@@ -266,6 +339,45 @@
     </div>
 
     <script>
+        // --- JAVASCRIPT UNTUK BUKA UNDANGAN & AUDIO ---
+        const btnBuka = document.getElementById('btn-buka');
+        const coverPage = document.getElementById('cover-page');
+        const bgmAudio = document.getElementById('bgm-audio');
+        const audioControl = document.getElementById('audio-control');
+
+        let isPlaying = false;
+
+        btnBuka.addEventListener('click', () => {
+            // Animasi Cover menghilang
+            coverPage.classList.add('cover-hidden');
+            
+            // Putar audio
+            bgmAudio.play().then(() => {
+                isPlaying = true;
+                audioControl.style.display = 'flex'; // Munculkan tombol kontrol
+            }).catch(err => console.log("Gagal memutar audio otomatis:", err));
+
+            // Hapus cover dari DOM setelah animasi selesai agar tidak menghalangi klik
+            setTimeout(() => {
+                coverPage.style.display = 'none';
+            }, 1000);
+        });
+
+        // Kontrol Pause/Play Audio
+        audioControl.addEventListener('click', () => {
+            if (isPlaying) {
+                bgmAudio.pause();
+                audioControl.classList.add('paused');
+                isPlaying = false;
+            } else {
+                bgmAudio.play();
+                audioControl.classList.remove('paused');
+                isPlaying = true;
+            }
+        });
+
+
+        // --- SISA JAVASCRIPT ANIMASI DAN SLIDE TETAP SAMA ---
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         let isAnimating = false;
@@ -344,7 +456,6 @@
             }
         }
 
-        // --- Event Listeners for Touch (Swipe) ---
         let startY = 0;
         let startX = 0;
         
@@ -373,7 +484,6 @@
             }
         }, { passive: false });
 
-        // --- Event Listener for Mouse Wheel (PC) ---
         let wheelTimeout;
         document.getElementById('app').addEventListener('wheel', (e) => {
             const isScrollable = e.target.closest('#slide-3');
@@ -395,20 +505,15 @@
             }, 50);
         });
 
-        // --- Fungsi Kirim RSVP ke Email ---
         function sendRSVP(event) {
-            // Mencegah form memuat ulang halaman (refresh)
             event.preventDefault();
 
-            // 1. Ambil data dari input pengguna berdasarkan ID
             const nama = document.getElementById('rsvp-nama').value;
             const status = document.getElementById('rsvp-status').value;
             const pesan = document.getElementById('rsvp-pesan').value;
 
-            // 2. Siapkan alamat email tujuan (TIDAK ditampilkan ke layar pengguna)
             const alamatEmail = "ruangdesain15@gmail.com"; 
             
-            // 3. Siapkan Judul (Subject) dan Isi Pesan (Body) dari email
             const subject = encodeURIComponent(`RSVP Bukber Instansi - ${nama}`);
             const body = encodeURIComponent(
                 `Berikut adalah konfirmasi kehadiran saya:\n\n` +
@@ -418,7 +523,6 @@
                 `Terima kasih.`
             );
 
-            // 4. Buka aplikasi email default pengirim (contoh: Gmail, Mail app)
             window.location.href = `mailto:${alamatEmail}?subject=${subject}&body=${body}`;
         }
 
